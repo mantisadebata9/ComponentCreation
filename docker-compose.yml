@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"  # Streamlit
+      - "8000:8000"  # FastAPI (optional backend)
+    volumes:
+      - ./output:/app/output
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+    environment:
+      - FIGMA_API_KEY=${FIGMA_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONUNBUFFERED=1
+    command: streamlit run frontend/app.py --server.port=8501 --server.address=0.0.0.0
